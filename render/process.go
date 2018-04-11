@@ -46,7 +46,7 @@ func (r processWithContainerNameRenderer) Render(rpt report.Report) Nodes {
 		if !ok {
 			continue
 		}
-		propagateLatests(container, p, docker.ContainerName)
+		p = propagateLatests(container, p, docker.ContainerName)
 		outputs[id] = p
 	}
 	return Nodes{Nodes: outputs, Filtered: processes.Filtered}
