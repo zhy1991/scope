@@ -143,10 +143,8 @@ func (r containerWithImageNameRenderer) Render(rpt report.Report) Nodes {
 		imageNameWithoutVersion := docker.ImageNameWithoutVersion(imageName)
 		imageNodeID := report.MakeContainerImageNodeID(imageNameWithoutVersion)
 
-		c = propagateLatest(docker.ImageName, image, c)
-		c = propagateLatest(docker.ImageSize, image, c)
-		c = propagateLatest(docker.ImageVirtualSize, image, c)
-		c = propagateLatest(docker.ImageLabelPrefix+"works.weave.role", image, c)
+		c = propagateLatests(image, c, docker.ImageName, docker.ImageSize, docker.ImageVirtualSize,
+			docker.ImageLabelPrefix+"works.weave.role")
 		c.Parents = c.Parents.
 			Delete(report.ContainerImage).
 			Add(report.ContainerImage, report.MakeStringSet(imageNodeID))
