@@ -80,11 +80,11 @@ var (
 
 	RenderedProcesses = report.Nodes{
 		fixture.ClientProcess1NodeID: processNode(fixture.ClientProcess1NodeID, fixture.ServerProcessNodeID).
-			WithLatests(map[string]string{
-				report.HostNodeID: fixture.ClientHostNodeID,
-				process.PID:       fixture.Client1PID,
-				process.Name:      fixture.Client1Name,
-			}).
+			WithLatests(
+				report.HostNodeID, fixture.ClientHostNodeID,
+				process.PID, fixture.Client1PID,
+				process.Name, fixture.Client1Name,
+			).
 			WithChildren(report.MakeNodeSet(
 				RenderedEndpoints[fixture.Client54001NodeID],
 			)),
@@ -114,7 +114,7 @@ var (
 
 	RenderedProcessNames = report.Nodes{
 		fixture.Client1Name: processNameNode(fixture.Client1Name, fixture.ServerName).
-			WithLatests(map[string]string{process.Name: fixture.Client1Name}).
+			WithLatests(process.Name, fixture.Client1Name).
 			WithCounters(map[string]int{report.Process: 2}).
 			WithChildren(report.MakeNodeSet(
 				RenderedEndpoints[fixture.Client54001NodeID],
@@ -124,7 +124,7 @@ var (
 			)),
 
 		fixture.ServerName: processNameNode(fixture.ServerName).
-			WithLatests(map[string]string{process.Name: fixture.ServerName}).
+			WithLatests(process.Name, fixture.ServerName).
 			WithCounters(map[string]int{report.Process: 1}).
 			WithChildren(report.MakeNodeSet(
 				RenderedEndpoints[fixture.Server80NodeID],
@@ -153,12 +153,12 @@ var (
 
 	RenderedContainers = report.Nodes{
 		fixture.ClientContainerNodeID: container(fixture.ClientContainerNodeID, fixture.ServerContainerNodeID).
-			WithLatests(map[string]string{
-				report.HostNodeID:    fixture.ClientHostNodeID,
-				docker.ContainerID:   fixture.ClientContainerID,
-				docker.ContainerName: fixture.ClientContainerName,
-				docker.ImageName:     fixture.ClientContainerImageName,
-			}).
+			WithLatests(
+				report.HostNodeID, fixture.ClientHostNodeID,
+				docker.ContainerID, fixture.ClientContainerID,
+				docker.ContainerName, fixture.ClientContainerName,
+				docker.ImageName, fixture.ClientContainerImageName,
+			).
 			WithChildren(report.MakeNodeSet(
 				RenderedEndpoints[fixture.Client54001NodeID],
 				RenderedEndpoints[fixture.Client54002NodeID],
@@ -179,9 +179,9 @@ var (
 
 	RenderedContainerHostnames = report.Nodes{
 		fixture.ClientContainerHostname: containerHostnameNode(fixture.ClientContainerHostname, fixture.ServerContainerHostname).
-			WithLatests(map[string]string{
-				docker.ContainerHostname: fixture.ClientContainerHostname,
-			}).
+			WithLatests(
+				docker.ContainerHostname, fixture.ClientContainerHostname,
+			).
 			WithCounters(map[string]int{
 				report.Container: 1,
 			}).
@@ -194,9 +194,9 @@ var (
 			)),
 
 		fixture.ServerContainerHostname: containerHostnameNode(fixture.ServerContainerHostname).
-			WithLatests(map[string]string{
-				docker.ContainerHostname: fixture.ServerContainerHostname,
-			}).
+			WithLatests(
+				docker.ContainerHostname, fixture.ServerContainerHostname,
+			).
 			WithChildren(report.MakeNodeSet(
 				RenderedEndpoints[fixture.Server80NodeID],
 				RenderedProcesses[fixture.ServerProcessNodeID],
@@ -213,11 +213,11 @@ var (
 
 	RenderedContainerImages = report.Nodes{
 		ClientContainerImageNodeID: containerImage(ClientContainerImageNodeID, ServerContainerImageNodeID).
-			WithLatests(map[string]string{
-				report.HostNodeID: fixture.ClientHostNodeID,
-				docker.ImageID:    fixture.ClientContainerImageID,
-				docker.ImageName:  fixture.ClientContainerImageName,
-			}).
+			WithLatests(
+				report.HostNodeID, fixture.ClientHostNodeID,
+				docker.ImageID, fixture.ClientContainerImageID,
+				docker.ImageName, fixture.ClientContainerImageName,
+			).
 			WithCounters(map[string]int{
 				report.Container: 1,
 			}).
@@ -292,9 +292,9 @@ var (
 
 	RenderedHosts = report.Nodes{
 		fixture.ClientHostNodeID: hostNode(fixture.ClientHostNodeID, fixture.ServerHostNodeID).
-			WithLatests(map[string]string{
-				host.HostName: fixture.ClientHostName,
-			}).
+			WithLatests(
+				host.HostName, fixture.ClientHostName,
+			).
 			WithChildren(report.MakeNodeSet(
 				RenderedEndpoints[fixture.Client54001NodeID],
 				RenderedEndpoints[fixture.Client54002NodeID],
