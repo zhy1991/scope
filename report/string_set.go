@@ -50,6 +50,19 @@ func (s StringSet) Intersection(b StringSet) StringSet {
 	return result
 }
 
+// ContainsSet returns true if every element of b is already in s
+func (s StringSet) ContainsSet(b StringSet) bool {
+	i, j := 0, 0
+	for ; i < len(s) && j < len(b); i++ {
+		if s[i] == b[j] {
+			j++
+		} else if s[i] > b[j] {
+			return false
+		}
+	}
+	return j >= len(b) // nothing remaining in b
+}
+
 // Equal returns true if a and b have the same contents
 func (s StringSet) Equal(b StringSet) bool {
 	if len(s) != len(b) {
