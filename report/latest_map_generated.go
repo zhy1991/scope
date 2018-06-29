@@ -42,8 +42,9 @@ func (m StringLatestMap) Size() int {
 	return len(m)
 }
 
-// Merge produces a fresh StringLatestMap containing the keys from both inputs.
+// Merge produces a StringLatestMap containing the keys from both inputs.
 // When both inputs contain the same key, the newer value is used.
+// Tries to return one of its inputs, if that already holds the correct result.
 func (m StringLatestMap) Merge(n StringLatestMap) StringLatestMap {
 	switch {
 	case m == nil:
@@ -51,14 +52,35 @@ func (m StringLatestMap) Merge(n StringLatestMap) StringLatestMap {
 	case n == nil:
 		return m
 	}
-	l := len(m)
-	if len(n) > l {
-		l = len(n)
+	lenm := len(m)
+	if len(n) > lenm {
+		m, n, lenm = n, m, len(n) //swap so m is always at least as long as n
 	}
-	out := make([]stringLatestEntry, 0, l)
 
 	i, j := 0, 0
-	for i < len(m) {
+loop:
+	for i < lenm {
+		switch {
+		case j >= len(n) || m[i].key < n[j].key:
+			i++
+		case m[i].key == n[j].key:
+			if m[i].Timestamp.Before(n[j].Timestamp) {
+				break loop
+			}
+			i++
+			j++
+		default:
+			break loop
+		}
+	}
+	if i >= len(m) && j >= len(n) {
+		return m
+	}
+
+	out := make([]stringLatestEntry, i, lenm)
+	copy(out, m[:i])
+
+	for i < lenm {
 		switch {
 		case j >= len(n) || m[i].key < n[j].key:
 			out = append(out, m[i])
@@ -264,8 +286,9 @@ func (m NodeControlDataLatestMap) Size() int {
 	return len(m)
 }
 
-// Merge produces a fresh NodeControlDataLatestMap containing the keys from both inputs.
+// Merge produces a NodeControlDataLatestMap containing the keys from both inputs.
 // When both inputs contain the same key, the newer value is used.
+// Tries to return one of its inputs, if that already holds the correct result.
 func (m NodeControlDataLatestMap) Merge(n NodeControlDataLatestMap) NodeControlDataLatestMap {
 	switch {
 	case m == nil:
@@ -273,14 +296,35 @@ func (m NodeControlDataLatestMap) Merge(n NodeControlDataLatestMap) NodeControlD
 	case n == nil:
 		return m
 	}
-	l := len(m)
-	if len(n) > l {
-		l = len(n)
+	lenm := len(m)
+	if len(n) > lenm {
+		m, n, lenm = n, m, len(n) //swap so m is always at least as long as n
 	}
-	out := make([]nodeControlDataLatestEntry, 0, l)
 
 	i, j := 0, 0
-	for i < len(m) {
+loop:
+	for i < lenm {
+		switch {
+		case j >= len(n) || m[i].key < n[j].key:
+			i++
+		case m[i].key == n[j].key:
+			if m[i].Timestamp.Before(n[j].Timestamp) {
+				break loop
+			}
+			i++
+			j++
+		default:
+			break loop
+		}
+	}
+	if i >= len(m) && j >= len(n) {
+		return m
+	}
+
+	out := make([]nodeControlDataLatestEntry, i, lenm)
+	copy(out, m[:i])
+
+	for i < lenm {
 		switch {
 		case j >= len(n) || m[i].key < n[j].key:
 			out = append(out, m[i])
