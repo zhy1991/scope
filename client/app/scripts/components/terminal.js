@@ -6,6 +6,7 @@ import classNames from 'classnames';
 import { debounce } from 'lodash';
 import { Terminal as Term } from 'xterm';
 import * as fit from 'xterm/lib/addons/fit/fit';
+import theme from 'weaveworks-ui-components/lib/theme';
 
 import { closeTerminal } from '../actions/app-actions';
 import { getNeutralColor } from '../utils/color-utils';
@@ -146,6 +147,8 @@ class Terminal extends React.Component {
   mountTerminal() {
     Term.applyAddon(fit);
     this.term = new Term({
+      fontFamily: theme.fontFamilies.monospace,
+      fontSize: parseInt(theme.fontSizes.tiny, 10),
       convertEol: !this.props.pipe.get('raw'),
       cursorBlink: true,
       scrollback: 10000,
