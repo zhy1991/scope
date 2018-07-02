@@ -146,7 +146,7 @@ class Terminal extends React.Component {
   mountTerminal() {
     Term.applyAddon(fit);
     this.term = new Term({
-      fontFamily: '"Roboto Mono", "Courier New", monospace',
+      fontFamily: '"Roboto Mono", "Courier", "Courier New", monospace',
       fontSize: 12,
       convertEol: !this.props.pipe.get('raw'),
       cursorBlink: true,
